@@ -67,21 +67,16 @@ func main() {
 		window.Hide()
 	})
 
-	// Create a system tray with Open and Exit options
+	// Create a system tray that opens the window on click
 	systemTray := app.SystemTray.New()
 
-	// Create a menu for the system tray
+	// On Linux, systray requires a menu, so add an "Open" item as the primary action
 	menu := app.NewMenu()
 	menu.Add("Open").OnClick(func(data *application.Context) {
 		window.Show()
 		window.Focus()
 	})
-	menu.AddSeparator()
-	menu.Add("Exit").OnClick(func(data *application.Context) {
-		app.Quit()
-	})
 
-	// Set the menu for the system tray
 	systemTray.SetMenu(menu)
 	systemTray.SetLabel("Character Map")
 
