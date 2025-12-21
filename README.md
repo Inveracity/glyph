@@ -1,4 +1,4 @@
-# Character Map
+# Glyph
 
 ## Getting Started
 
@@ -29,5 +29,5 @@ Now that you have your project set up, it's time to explore the features that Wa
 
 ```sh
 wails3 task setup:docker
-CGO_ENABLED=1 wails3 build GOOS=windows
+wails3 task windows:build CGO_ENABLED=1
 ```

@@ -1,13 +1,13 @@
 [Desktop Entry]
 Version=1.0
 Name=My Product
-Comment=A longpress2 application
+Comment=A glyph application
 # The Exec line includes %u to pass the URL to the application
-Exec=/usr/local/bin/longpress2 %u
+Exec=/usr/local/bin/glyph %u
 Terminal=false
 Type=Application
-Icon=longpress2
+Icon=glyph
 Categories=Utility;
-StartupWMClass=longpress2
+StartupWMClass=glyph
 
  

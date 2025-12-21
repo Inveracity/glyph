@@ -2,8 +2,8 @@
 set -e
 
 # Build configuration
-APP_NAME="longpress2"
-BUNDLE_ID="com.example.longpress2"
+APP_NAME="glyph"
+BUNDLE_ID="com.example.glyph"
 VERSION="0.1.0"
 BUILD_NUMBER="0.1.0"
 BUILD_DIR="build/ios"

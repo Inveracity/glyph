@@ -29,7 +29,7 @@ func main() {
 	// 'Bind' is a list of Go struct instances. The frontend has access to the methods of these instances.
 	// 'Mac' options tailor the application when running an macOS.
 	app := application.New(application.Options{
-		Name:        "Character Map",
+		Name:        "Glyph",
 		Description: "Quick access to special characters and accents",
 		Services: []application.Service{
 			application.NewService(&CharacterService{}),
@@ -49,7 +49,7 @@ func main() {
 	// 'URL' is the URL that will be loaded into the webview.
 	// Window starts hidden and frameless (borderless)
 	window := app.Window.NewWithOptions(application.WebviewWindowOptions{
-		Title:     "Character Map",
+		Title:     "Glyph",
 		Hidden:    true,
 		Frameless: true,
 		Width:     850,
@@ -83,7 +83,7 @@ func main() {
 	})
 
 	systemTray.SetMenu(menu)
-	systemTray.SetLabel("Character Map")
+	systemTray.SetLabel("Glyph")
 
 	// Register global hotkey Ctrl+Shift+Space to show the window
 	go func() {
