@@ -4,9 +4,9 @@ import (
 	"embed"
 	_ "embed"
 	"log"
-	"time"
 
 	"github.com/wailsapp/wails/v3/pkg/application"
+	"github.com/wailsapp/wails/v3/pkg/events"
 )
 
 // Wails uses Go's `embed` package to embed the frontend files into the binary.
@@ -16,13 +16,6 @@ import (
 
 //go:embed all:frontend/dist
 var assets embed.FS
-
-func init() {
-	// Register a custom event whose associated data type is string.
-	// This is not required, but the binding generator will pick up registered events
-	// and provide a strongly typed JS/TS API for them.
-	application.RegisterEvent[string]("time")
-}
 
 // main function serves as the application's entry point. It initializes the application, creates a window,
 // and starts a goroutine that emits a time-based event every second. It subsequently runs the application and
@@ -35,10 +28,10 @@ func main() {
 	// 'Bind' is a list of Go struct instances. The frontend has access to the methods of these instances.
 	// 'Mac' options tailor the application when running an macOS.
 	app := application.New(application.Options{
-		Name:        "longpress2",
-		Description: "A demo of using raw HTML & CSS",
+		Name:        "Character Map",
+		Description: "Quick access to special characters and accents",
 		Services: []application.Service{
-			application.NewService(&GreetService{}),
+			application.NewService(&CharacterService{}),
 		},
 		Assets: application.AssetOptions{
 			Handler: application.AssetFileServerFS(assets),
@@ -55,9 +48,11 @@ func main() {
 	// 'URL' is the URL that will be loaded into the webview.
 	// Window starts hidden and frameless (borderless)
 	window := app.Window.NewWithOptions(application.WebviewWindowOptions{
-		Title:     "Window 1",
+		Title:     "Character Map",
 		Hidden:    true,
 		Frameless: true,
+		Width:     850,
+		Height:    600,
 		Mac: application.MacWindow{
 			InvisibleTitleBarHeight: 50,
 			Backdrop:                application.MacBackdropTranslucent,
@@ -65,6 +60,11 @@ func main() {
 		},
 		BackgroundColour: application.NewRGB(27, 38, 54),
 		URL:              "/",
+	})
+
+	// Hide window when it loses focus (clicking outside)
+	window.OnWindowEvent(events.Common.WindowLostFocus, func(event *application.WindowEvent) {
+		window.Hide()
 	})
 
 	// Create a system tray with Open and Exit options
@@ -83,17 +83,7 @@ func main() {
 
 	// Set the menu for the system tray
 	systemTray.SetMenu(menu)
-	systemTray.SetLabel("longpress2")
-
-	// Create a goroutine that emits an event containing the current time every second.
-	// The frontend can listen to this event and update the UI accordingly.
-	go func() {
-		for {
-			now := time.Now().Format(time.RFC1123)
-			app.Event.Emit("time", now)
-			time.Sleep(time.Second)
-		}
-	}()
+	systemTray.SetLabel("Character Map")
 
 	// Run the application. This blocks until the application has been exited.
 	err := app.Run()

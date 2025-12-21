@@ -5,6 +5,9 @@
 // @ts-ignore: Unused imports
 import { Call as $Call, CancellablePromise as $CancellablePromise, Create as $Create } from "@wailsio/runtime";
 
-export function Greet(name: string): $CancellablePromise<string> {
-    return $Call.ByID(1411160069, name);
+/**
+ * TypeCharacter types the given character at the current cursor position
+ */
+export function TypeCharacter(char: string): $CancellablePromise<void> {
+    return $Call.ByID(1111630857, char);
 }
