@@ -76,6 +76,10 @@ func main() {
 		window.Show()
 		window.Focus()
 	})
+	menu.AddSeparator()
+	menu.Add("Exit").OnClick(func(data *application.Context) {
+		app.Quit()
+	})
 
 	systemTray.SetMenu(menu)
 	systemTray.SetLabel("Character Map")
