@@ -124,7 +124,7 @@ for arg in "$@"; do
         *) ARGS="$ARGS $arg" ;;
     esac
 done
-exec zig cc -target x86_64-windows-gnu $ARGS
+exec zig cc -target x86_64-windows-gnu -fno-sanitize=all $ARGS
 ZIGWRAP
 RUN chmod +x /usr/local/bin/zcc-windows-amd64
 
@@ -144,7 +144,7 @@ for arg in "$@"; do
         *) ARGS="$ARGS $arg" ;;
     esac
 done
-exec zig cc -target aarch64-windows-gnu $ARGS
+exec zig cc -target aarch64-windows-gnu -fno-sanitize=all $ARGS
 ZIGWRAP
 RUN chmod +x /usr/local/bin/zcc-windows-arm64
 
