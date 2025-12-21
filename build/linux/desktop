@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Name=My Product
+Comment=A longpress2 application
+# The Exec line includes %u to pass the URL to the application
+Exec=/usr/local/bin/longpress2 %u
+Terminal=false
+Type=Application
+Icon=longpress2
+Categories=Utility;
+StartupWMClass=longpress2
+
+ 
