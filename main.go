@@ -97,18 +97,20 @@ func main() {
 		for ev := range evChan {
 			// Track Ctrl key (29 for Left Ctrl, 3612 for Right Ctrl on Linux)
 			if ev.Keycode == 29 || ev.Keycode == 3612 {
-				if ev.Kind == hook.KeyDown {
+				switch ev.Kind {
+				case hook.KeyDown:
 					ctrlPressed = true
-				} else if ev.Kind == hook.KeyUp {
+				case hook.KeyUp:
 					ctrlPressed = false
 				}
 			}
 
 			// Track Shift key (42 for Left Shift, 54 for Right Shift on Linux)
 			if ev.Keycode == 42 || ev.Keycode == 54 {
-				if ev.Kind == hook.KeyDown {
+				switch ev.Kind {
+				case hook.KeyDown:
 					shiftPressed = true
-				} else if ev.Kind == hook.KeyUp {
+				case hook.KeyUp:
 					shiftPressed = false
 				}
 			}
