@@ -71,6 +71,10 @@ function setActiveTab(letter: string) {
     renderCharacterGrid();
 }
 
+// Hotkey mappings for lowercase (numbers) and uppercase (QWERTY)
+const lowercaseHotkeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+const uppercaseHotkeys = ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p'];
+
 // Render character grid for active tab
 function renderCharacterGrid() {
     gridElement.innerHTML = '';
@@ -79,7 +83,7 @@ function renderCharacterGrid() {
     const uppercase = activeTab.toUpperCase();
     
     // Create sections for both lowercase and uppercase
-    [lowercase, uppercase].forEach(baseChar => {
+    [lowercase, uppercase].forEach((baseChar, sectionIndex) => {
         const variants = charMap[baseChar];
         if (!variants) return;
         
@@ -94,10 +98,32 @@ function renderCharacterGrid() {
         const variantsContainer = document.createElement('div');
         variantsContainer.className = 'char-variants';
         
-        variants.forEach((char) => {
+        // Use appropriate hotkey set based on whether it's lowercase or uppercase
+        const hotkeys = sectionIndex === 0 ? lowercaseHotkeys : uppercaseHotkeys;
+        
+        variants.forEach((char, index) => {
             const button = document.createElement('button');
             button.className = 'char-button';
-            button.textContent = char;
+            
+            // Create container for character and hotkey
+            const charText = document.createElement('span');
+            charText.className = 'char-text';
+            charText.textContent = char;
+            button.appendChild(charText);
+            
+            // Add hotkey indicator if available
+            if (index < hotkeys.length) {
+                const hotkey = hotkeys[index];
+                const hotkeyIndicator = document.createElement('span');
+                hotkeyIndicator.className = 'char-hotkey';
+                hotkeyIndicator.textContent = hotkey;
+                button.appendChild(hotkeyIndicator);
+                
+                // Store hotkey on button for keyboard handling
+                button.dataset.hotkey = hotkey;
+            }
+            
+            button.dataset.char = char;
             button.addEventListener('click', () => typeCharacter(char));
             variantsContainer.appendChild(button);
         });
@@ -130,6 +156,31 @@ function showNotification(message: string, isError = false) {
         notificationElement.className = 'notification';
     }, 2000);
 }
+
+// Add keyboard shortcuts
+document.addEventListener('keydown', (event) => {
+    const key = event.key.toLowerCase();
+    
+    // Check if the pressed key corresponds to one of our tabs
+    if (letterGroups.includes(key)) {
+        event.preventDefault();
+        setActiveTab(key);
+        return;
+    }
+    
+    // Check if the pressed key corresponds to a character hotkey
+    const charButtons = gridElement.querySelectorAll('.char-button');
+    charButtons.forEach(button => {
+        const hotkey = (button as HTMLElement).dataset.hotkey;
+        if (hotkey && hotkey === key) {
+            event.preventDefault();
+            const char = (button as HTMLElement).dataset.char;
+            if (char) {
+                typeCharacter(char);
+            }
+        }
+    });
+});
 
 // Initialize
 createTabs();

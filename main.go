@@ -5,6 +5,7 @@ import (
 	_ "embed"
 	"log"
 
+	hook "github.com/robotn/gohook"
 	"github.com/wailsapp/wails/v3/pkg/application"
 	"github.com/wailsapp/wails/v3/pkg/events"
 )
@@ -83,6 +84,44 @@ func main() {
 
 	systemTray.SetMenu(menu)
 	systemTray.SetLabel("Character Map")
+
+	// Register global hotkey Ctrl+Shift+Space to show the window
+	go func() {
+		// Start listening for keyboard events
+		evChan := hook.Start()
+		defer hook.End()
+
+		ctrlPressed := false
+		shiftPressed := false
+
+		for ev := range evChan {
+			// Track Ctrl key (29 for Left Ctrl, 3612 for Right Ctrl on Linux)
+			if ev.Keycode == 29 || ev.Keycode == 3612 {
+				if ev.Kind == hook.KeyDown {
+					ctrlPressed = true
+				} else if ev.Kind == hook.KeyUp {
+					ctrlPressed = false
+				}
+			}
+
+			// Track Shift key (42 for Left Shift, 54 for Right Shift on Linux)
+			if ev.Keycode == 42 || ev.Keycode == 54 {
+				if ev.Kind == hook.KeyDown {
+					shiftPressed = true
+				} else if ev.Kind == hook.KeyUp {
+					shiftPressed = false
+				}
+			}
+
+			// Check for Space (57 on Linux) with Ctrl+Shift
+			if ev.Keycode == 57 && ev.Kind == hook.KeyDown {
+				if ctrlPressed && shiftPressed {
+					window.Show()
+					window.Focus()
+				}
+			}
+		}
+	}()
 
 	// Run the application. This blocks until the application has been exited.
 	err := app.Run()

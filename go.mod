@@ -4,6 +4,7 @@ go 1.24.0
 
 require (
 	github.com/go-vgo/robotgo v1.0.0
+	github.com/robotn/gohook v0.42.3
 	github.com/wailsapp/wails/v3 v3.0.0-alpha.50
 )
 
