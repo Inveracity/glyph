@@ -53,6 +53,7 @@ tasks:
       GOOS: linux
       CGO_ENABLED: 1
       GOARCH: '{{.ARCH | default ARCH}}'
+      CGO_LDFLAGS: '-Wl,--no-as-needed -Wl,-rpath,$$ORIGIN'
 
   build:docker:
     summary: Cross-compiles for Linux using Docker with Zig (for macOS/Windows hosts)
