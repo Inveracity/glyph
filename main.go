@@ -18,6 +18,9 @@ import (
 //go:embed all:frontend/dist
 var assets embed.FS
 
+//go:embed build/appicon.png
+var appIcon []byte
+
 // main function serves as the application's entry point. It initializes the application, creates a window,
 // and starts a goroutine that emits a time-based event every second. It subsequently runs the application and
 // logs any error that might occur.
@@ -70,6 +73,7 @@ func main() {
 
 	// Create a system tray that opens the window on click
 	systemTray := app.SystemTray.New()
+	systemTray.SetIcon(appIcon)
 
 	// On Linux, systray requires a menu, so add an "Open" item as the primary action
 	menu := app.NewMenu()
@@ -126,10 +130,10 @@ func main() {
 	}()
 
 	// Run the application. This blocks until the application has been exited.
-	err := app.Run()
+	runErr := app.Run()
 
 	// If an error occurred while running the application, log it and exit.
-	if err != nil {
-		log.Fatal(err)
+	if runErr != nil {
+		log.Fatal(runErr)
 	}
 }
